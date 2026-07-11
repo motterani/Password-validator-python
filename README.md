@@ -2,7 +2,7 @@
 
 Mini-projeto em Python para validar a força de senhas por meio de uma interface de linha de comando (CLI).
 
-O projeto foi desenvolvido com foco em boas práticas de engenharia de software, incluindo separação de responsabilidades, testes automatizados, documentação e organização de repositório.
+O projeto foi desenvolvido com foco em boas práticas de engenharia de software, segurança, separação de responsabilidades, testes automatizados e gestão de riscos.
 
 ## Funcionalidades
 
@@ -15,12 +15,15 @@ O validador verifica se a senha possui:
 - pelo menos um caractere especial;
 - bloqueio de senhas comuns, como `123456`, `password`, `senha`, entre outras.
 
+A senha é solicitada de forma oculta, não é exibida na resposta e não pode ser informada como argumento do terminal.
+
 ## Estrutura do projeto
 
 ```text
 password-validator-python/
 ├── docs/
-│   └── architecture.md
+│   ├── architecture.md
+│   └── risk-analysis.md
 ├── src/
 │   └── password_validator/
 │       ├── __init__.py
@@ -29,9 +32,11 @@ password-validator-python/
 │       └── validator.py
 ├── tests/
 │   ├── __init__.py
+│   ├── test_cli.py
 │   ├── test_rules.py
 │   └── test_validator.py
 ├── .gitignore
+├── ALTERACOES.md
 ├── LICENSE
 ├── pyproject.toml
 ├── README.md
@@ -48,8 +53,8 @@ password-validator-python/
 ### 1. Clonar o repositório
 
 ```bash
-git clone https://github.com/SEU-USUARIO/password-validator-python.git
-cd password-validator-python
+git clone https://github.com/motterani/Password-validator-python.git
+cd Password-validator-python
 ```
 
 ### 2. Criar ambiente virtual
@@ -61,7 +66,7 @@ python -m venv .venv
 .venv\Scripts\activate
 ```
 
-No Linux/Mac:
+No Linux ou macOS:
 
 ```bash
 python3 -m venv .venv
@@ -77,14 +82,6 @@ pip install -e .
 
 ### 4. Executar o validador
 
-Passando a senha diretamente:
-
-```bash
-password-validator "SenhaForte123!"
-```
-
-Ou solicitando a senha de forma oculta:
-
 ```bash
 password-validator
 ```
@@ -92,32 +89,22 @@ password-validator
 Também é possível executar como módulo:
 
 ```bash
-python -m password_validator.cli "SenhaForte123!"
+python -m password_validator.cli
 ```
 
-## Exemplos de uso
+O programa solicitará a senha sem exibi-la no terminal.
 
-Senha válida:
-
-```bash
-password-validator "SenhaForte123!"
-```
-
-Saída esperada:
+## Exemplo de uso
 
 ```text
+Digite a senha para validação:
 Senha válida.
 ```
 
-Senha inválida:
-
-```bash
-password-validator "senha123"
-```
-
-Saída esperada:
+Para uma senha inválida:
 
 ```text
+Digite a senha para validação:
 Senha inválida.
 - A senha deve conter pelo menos uma letra maiúscula.
 - A senha deve conter pelo menos um caractere especial.
@@ -132,31 +119,30 @@ pytest
 Saída esperada:
 
 ```text
-16 passed
+18 passed
 ```
+
+## Gestão de riscos
+
+A análise detalhada está em [`docs/risk-analysis.md`](docs/risk-analysis.md). Os principais riscos identificados foram:
+
+- exposição da senha no terminal, histórico ou lista de processos;
+- lista limitada de senhas comuns;
+- cobertura insuficiente de testes;
+- divergência entre documentação e implementação;
+- sugestões incorretas ou inseguras geradas por IA.
+
+A resposta prioritária foi mitigar a exposição da senha. A aplicação agora utiliza `getpass`, não aceita senha como argumento e possui testes que garantem que o valor não seja impresso.
 
 ## Como a IA generativa apoiou o desenvolvimento
 
-A IA generativa foi utilizada como apoio para estruturar o projeto, sugerir a organização dos arquivos, criar a primeira versão das funções de validação, auxiliar na escrita dos testes unitários e melhorar a documentação do README.
+A IA generativa apoiou a organização do projeto, a identificação e classificação de riscos, a definição de estratégias de resposta, a revisão da CLI, a elaboração de testes e a atualização da documentação.
 
-Mesmo com esse apoio, o código foi revisado manualmente, os imports foram conferidos, os testes foram executados e as regras de validação foram analisadas para garantir que o comportamento do programa estivesse correto.
+As sugestões foram revisadas manualmente e validadas com testes automatizados. A IA foi utilizada como ferramenta de apoio, não como substituta da análise humana.
 
-## Desafios encontrados
+## Limitações e cuidados no uso da IA
 
-Os principais desafios foram organizar o projeto seguindo uma estrutura profissional em Python, separar corretamente as responsabilidades entre regras, validação e interface de linha de comando, além de garantir que os testes cobrissem os principais cenários de senha válida e inválida.
-
-Também foi necessário revisar as sugestões da IA para evitar código desnecessário, mensagens confusas ou estruturas incompatíveis com a execução real do projeto.
-
-## Cuidados de validação
-
-Foram adotados os seguintes cuidados:
-
-- revisão manual do código gerado;
-- execução dos testes com `pytest`;
-- validação de senhas fortes e fracas;
-- conferência da estrutura de pastas;
-- revisão do README;
-- execução do programa via terminal.
+A IA pode gerar código desnecessário, controles incompletos, mensagens inconsistentes ou documentação diferente do comportamento real. Por isso, foram adotados revisão humana, execução de testes, comparação entre código e documentação e avaliação específica dos riscos de segurança.
 
 ## Licença
 

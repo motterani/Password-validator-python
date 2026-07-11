@@ -3,33 +3,35 @@
 from __future__ import annotations
 
 import argparse
+import getpass
+import sys
 
 from password_validator.validator import validate_password
 
 
 def build_parser() -> argparse.ArgumentParser:
     """Build and return the CLI argument parser."""
-    parser = argparse.ArgumentParser(
+    return argparse.ArgumentParser(
         prog="password-validator",
-        description="Validador de senhas em Python.",
+        description=(
+            "Validador de senhas em Python. "
+            "A senha é solicitada de forma oculta no terminal."
+        ),
     )
-    parser.add_argument(
-        "password",
-        nargs="?",
-        help="Senha a ser validada. Se omitida, será solicitada no terminal.",
-    )
-    return parser
 
 
 def main() -> int:
-    """Run the password validator CLI."""
+    """Run the password validator CLI without exposing the password."""
     parser = build_parser()
-    args = parser.parse_args()
+    parser.parse_args()
 
-    password = args.password or input("Digite a senha para validação: ")
+    try:
+        password = getpass.getpass("Digite a senha para validação: ")
+    except (EOFError, KeyboardInterrupt):
+        print("\nValidação cancelada.", file=sys.stderr)
+        return 130
+
     result = validate_password(password)
-
-    print(f"\nSenha informada: {password}\n")
 
     if result.is_valid:
         print("Senha válida.")
@@ -38,7 +40,6 @@ def main() -> int:
     print("Senha inválida.")
     for error in result.errors:
         print(f"- {error}")
-
     return 1
 
 
