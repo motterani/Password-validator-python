@@ -6,6 +6,7 @@ import string
 
 MIN_LENGTH = 8
 SPECIAL_CHARACTERS = set(string.punctuation)
+
 COMMON_PASSWORDS = {
     "123456",
     "12345678",

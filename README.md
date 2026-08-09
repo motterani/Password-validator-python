@@ -1,8 +1,8 @@
 # Password Validator Python
 
-Mini-projeto em Python para validar a força de senhas por meio de uma interface de linha de comando (CLI).
+Validador de senhas em Python executado por linha de comando (CLI), desenvolvido com foco em **engenharia de software, segurança, especificação de requisitos, testes automatizados e uso responsável de Inteligência Artificial Generativa**.
 
-O projeto foi desenvolvido com foco em boas práticas de engenharia de software, segurança, separação de responsabilidades, testes automatizados e gestão de riscos.
+**Versão atual: 1.2.0**
 
 ## Funcionalidades
 
@@ -13,16 +13,62 @@ O validador verifica se a senha possui:
 - pelo menos uma letra minúscula;
 - pelo menos um número;
 - pelo menos um caractere especial;
-- bloqueio de senhas comuns, como `123456`, `password`, `senha`, entre outras.
+- bloqueio de senhas comuns cadastradas na aplicação.
 
-A senha é solicitada de forma oculta, não é exibida na resposta e não pode ser informada como argumento do terminal.
+A senha:
+
+- é solicitada com entrada oculta por `getpass`;
+- não é exibida na resposta;
+- não pode ser informada como argumento posicional;
+- não é armazenada pelo projeto.
+
+> Neste projeto, “força de senha” significa atendimento à política de validação implementada. A aplicação não calcula entropia ou tempo estimado de quebra.
+
+## Documentação da atividade
+
+A documentação de requisitos foi organizada para registrar os artefatos de especificação utilizados na atividade prática.
+
+- [Análise e especificação de requisitos](docs/requirements-specification.md)
+- [Arquitetura](docs/architecture.md)
+- [Análise de riscos](docs/risk-analysis.md)
+- [Histórico de alterações](ALTERACOES.md)
+
+A especificação contém:
+
+- requisitos funcionais;
+- regras de negócio;
+- requisitos não funcionais;
+- histórias de usuário;
+- critérios de aceitação;
+- caso de uso;
+- matriz de rastreabilidade;
+- lacunas e ambiguidades;
+- registro de como a IA apoiou o trabalho;
+- sugestões de IA aproveitadas, modificadas e descartadas.
+
+## Artefatos escolhidos
+
+Foram priorizados:
+
+1. histórias de usuário;
+2. critérios de aceitação;
+3. caso de uso textual;
+4. matriz de rastreabilidade;
+5. análise de lacunas e ambiguidades;
+6. análise de riscos.
+
+Esses artefatos são adequados porque a aplicação possui um fluxo curto e objetivo em CLI. Protótipos visuais não foram priorizados, pois não existe interface gráfica.
 
 ## Estrutura do projeto
 
 ```text
-password-validator-python/
+Password-validator-python/
+├── .github/
+│   └── workflows/
+│       └── tests.yml
 ├── docs/
 │   ├── architecture.md
+│   ├── requirements-specification.md
 │   └── risk-analysis.md
 ├── src/
 │   └── password_validator/
@@ -48,7 +94,7 @@ password-validator-python/
 - Python 3.10 ou superior
 - pip
 
-## Como executar o projeto
+## Como executar
 
 ### 1. Clonar o repositório
 
@@ -59,14 +105,14 @@ cd Password-validator-python
 
 ### 2. Criar ambiente virtual
 
-No Windows:
+Windows:
 
 ```bash
 python -m venv .venv
 .venv\Scripts\activate
 ```
 
-No Linux ou macOS:
+Linux ou macOS:
 
 ```bash
 python3 -m venv .venv
@@ -80,28 +126,30 @@ pip install -r requirements.txt
 pip install -e .
 ```
 
-### 4. Executar o validador
+### 4. Executar
 
 ```bash
 password-validator
 ```
 
-Também é possível executar como módulo:
+Ou:
 
 ```bash
 python -m password_validator.cli
 ```
 
-O programa solicitará a senha sem exibi-la no terminal.
+O programa solicita a senha sem exibi-la no terminal.
 
-## Exemplo de uso
+## Exemplos
+
+Senha válida:
 
 ```text
 Digite a senha para validação:
 Senha válida.
 ```
 
-Para uma senha inválida:
+Senha inválida:
 
 ```text
 Digite a senha para validação:
@@ -110,7 +158,9 @@ Senha inválida.
 - A senha deve conter pelo menos um caractere especial.
 ```
 
-## Como rodar os testes
+## Testes automatizados
+
+Execute:
 
 ```bash
 pytest
@@ -119,30 +169,57 @@ pytest
 Saída esperada:
 
 ```text
-18 passed
+22 passed
 ```
 
-## Gestão de riscos
+A versão 1.2.0 também adiciona **GitHub Actions**. Os testes são executados automaticamente em `push` e `pull_request` para Python 3.10, 3.11 e 3.12.
 
-A análise detalhada está em [`docs/risk-analysis.md`](docs/risk-analysis.md). Os principais riscos identificados foram:
+## Segurança
 
-- exposição da senha no terminal, histórico ou lista de processos;
-- lista limitada de senhas comuns;
-- cobertura insuficiente de testes;
-- divergência entre documentação e implementação;
-- sugestões incorretas ou inseguras geradas por IA.
+As principais decisões de segurança são:
 
-A resposta prioritária foi mitigar a exposição da senha. A aplicação agora utiliza `getpass`, não aceita senha como argumento e possui testes que garantem que o valor não seja impresso.
+- entrada oculta;
+- senha não exibida;
+- senha não aceita como argumento;
+- senha não armazenada;
+- tratamento de cancelamento;
+- testes contra regressões na CLI.
 
-## Como a IA generativa apoiou o desenvolvimento
+A análise completa está em [`docs/risk-analysis.md`](docs/risk-analysis.md).
 
-A IA generativa apoiou a organização do projeto, a identificação e classificação de riscos, a definição de estratégias de resposta, a revisão da CLI, a elaboração de testes e a atualização da documentação.
+## Como a IA Generativa apoiou o desenvolvimento
 
-As sugestões foram revisadas manualmente e validadas com testes automatizados. A IA foi utilizada como ferramenta de apoio, não como substituta da análise humana.
+A IA Generativa foi utilizada como apoio para:
 
-## Limitações e cuidados no uso da IA
+- organizar o projeto;
+- revisar a arquitetura;
+- identificar riscos e estratégias de resposta;
+- revisar a segurança da CLI;
+- sugerir cenários de teste;
+- identificar lacunas e ambiguidades;
+- estruturar a documentação de requisitos.
 
-A IA pode gerar código desnecessário, controles incompletos, mensagens inconsistentes ou documentação diferente do comportamento real. Por isso, foram adotados revisão humana, execução de testes, comparação entre código e documentação e avaliação específica dos riscos de segurança.
+As sugestões não foram utilizadas automaticamente. Elas foram revisadas e comparadas com o código, os requisitos e os testes.
+
+Exemplos:
+
+- **aproveitada:** uso de `getpass`;
+- **aproveitada:** separação entre regras, validador e CLI;
+- **aproveitada:** ampliação dos testes e inclusão de CI;
+- **modificada:** estratégia de entrada da senha após análise do risco de argumentos;
+- **descartada:** exibir a senha no resultado;
+- **não adotada nesta versão:** integração com base externa de senhas comprometidas;
+- **descartada para o escopo:** interface gráfica.
+
+Mais detalhes em [`docs/requirements-specification.md`](docs/requirements-specification.md).
+
+## Limitações conhecidas
+
+- lista local de senhas comuns é pequena;
+- não existe cálculo de entropia;
+- política de Unicode pode ser detalhada futuramente;
+- não existe limite máximo de comprimento;
+- espaços internos são aceitos pela implementação atual.
 
 ## Licença
 

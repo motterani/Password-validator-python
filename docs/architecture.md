@@ -1,39 +1,78 @@
 # Arquitetura do Projeto
 
-Este mini-projeto foi organizado com base em separação de responsabilidades.
+## Visão geral
 
-## Camadas principais
+O Password Validator Python é uma aplicação de linha de comando organizada com foco em separação de responsabilidades, segurança da entrada de dados, testabilidade e facilidade de manutenção.
+
+A documentação de requisitos e especificação está em [`requirements-specification.md`](requirements-specification.md).
+
+## Componentes principais
 
 ### `rules.py`
 
-Contém funções pequenas e específicas responsáveis por verificar regras individuais da senha, como presença de letras maiúsculas, números, caracteres especiais e tamanho mínimo.
+Contém funções pequenas e específicas para verificar regras individuais:
+
+- tamanho mínimo;
+- presença de letra maiúscula;
+- presença de letra minúscula;
+- presença de número;
+- presença de caractere especial;
+- verificação de senha comum.
 
 ### `validator.py`
 
-Contém a função principal `validate_password`, que coordena a aplicação das regras e retorna um objeto com o resultado da validação.
+Contém a função `validate_password`, responsável por coordenar as regras e retornar um `PasswordValidationResult`.
+
+O uso de `dataclass` torna o resultado explícito e simples de testar.
 
 ### `cli.py`
 
-Contém a interface de linha de comando. A senha é solicitada exclusivamente por `getpass.getpass()`, sem eco no terminal. A CLI não aceita a senha como argumento e não exibe o valor informado.
+Implementa a interface de linha de comando.
+
+Decisões de segurança:
+
+- a senha é solicitada somente com `getpass.getpass()`;
+- a CLI não aceita senha como argumento posicional;
+- o valor informado não é exibido na saída;
+- cancelamentos por `EOFError` e `KeyboardInterrupt` retornam código `130`.
 
 ### `tests/`
 
-Contém os testes automatizados das regras, do validador e da interface de linha de comando. Os testes da CLI verificam que a senha não é escrita na saída padrão ou de erro.
+Contém testes das regras, do validador e da CLI.
 
-## Decisões de projeto
+A suíte verifica também requisitos de segurança, incluindo:
 
-- Uso de `src/` para separar código-fonte dos arquivos de configuração.
-- Uso de `pytest` para facilitar a criação e execução dos testes.
-- Uso de `dataclass` para representar o resultado da validação de maneira simples e legível.
-- Separação entre lógica de negócio e interface CLI.
-- Entrada oculta para reduzir o risco de exposição de dados sensíveis.
-- Proibição de senha em argumento de terminal para evitar histórico de comandos e exposição na lista de processos.
+- não exibição da senha;
+- rejeição de senha como argumento;
+- tratamento de cancelamento;
+- múltiplas violações de regras.
+
+### `.github/workflows/tests.yml`
+
+Executa a suíte de testes automaticamente no GitHub Actions para Python 3.10, 3.11 e 3.12 em `push` e `pull_request`.
 
 ## Fluxo de execução
 
-1. O usuário executa o comando no terminal.
-2. A CLI solicita a senha de forma oculta.
-3. A função `validate_password` aplica as regras.
-4. Somente o resultado e as regras não atendidas são exibidos.
+1. O usuário executa `password-validator`.
+2. O `argparse` valida a linha de comando.
+3. A CLI solicita a senha por entrada oculta.
+4. `validate_password()` aplica as regras.
+5. O sistema informa se a senha é válida.
+6. Se inválida, apresenta os critérios não atendidos.
+7. A senha nunca é incluída na resposta.
 
-A análise completa de riscos está em [`risk-analysis.md`](risk-analysis.md).
+## Decisões de projeto
+
+- estrutura `src/` para separar código-fonte;
+- `pytest` para testes automatizados;
+- `dataclass` para representar o resultado;
+- regras isoladas em funções pequenas;
+- entrada oculta com `getpass`;
+- proibição de senha em argumentos;
+- CI para reduzir regressões;
+- documentação de requisitos ligada aos testes por matriz de rastreabilidade.
+
+## Documentação relacionada
+
+- [Análise e especificação de requisitos](requirements-specification.md)
+- [Análise de riscos](risk-analysis.md)

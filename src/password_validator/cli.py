@@ -40,6 +40,7 @@ def main() -> int:
     print("Senha inválida.")
     for error in result.errors:
         print(f"- {error}")
+
     return 1
 
 

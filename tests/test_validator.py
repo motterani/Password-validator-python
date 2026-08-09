@@ -62,3 +62,17 @@ def test_validate_password_rejects_common_password():
 def test_validate_password_raises_type_error_for_non_string():
     with pytest.raises(TypeError):
         validate_password(12345678)  # type: ignore[arg-type]
+
+
+def test_validate_password_reports_multiple_errors():
+    result = validate_password("abc")
+
+    expected_errors = {
+        "A senha deve ter pelo menos 8 caracteres.",
+        "A senha deve conter pelo menos uma letra maiúscula.",
+        "A senha deve conter pelo menos um número.",
+        "A senha deve conter pelo menos um caractere especial.",
+    }
+
+    assert result.is_valid is False
+    assert expected_errors.issubset(set(result.errors))
