@@ -288,7 +288,3 @@ Password-validator-python/
 - [Arquitetura](docs/architecture.md)
 - [Análise de riscos](docs/risk-analysis.md)
 - [Histórico de alterações](ALTERACOES.md)
-
-## Observação para a entrega da atividade
-
-Além de publicar este repositório, a atividade solicita visitar o repositório de um colega e deixar uma sugestão. Essa interação deve ser realizada diretamente no repositório do colega e não pode ser representada apenas por um arquivo neste projeto.
