@@ -1,0 +1,16 @@
+flowchart LR
+    User["Usuário"]
+
+    subgraph System["Password Validator"]
+        CLI["CLI<br/>cli.py"]
+        Validator["Validator<br/>validator.py"]
+        Rules["Password Rules<br/>rules.py"]
+        Common["Lista local de<br/>senhas comuns"]
+    end
+
+    User -->|"digita senha<br/>entrada oculta"| CLI
+    CLI -->|"validate_password()"| Validator
+    Validator -->|"executa regras"| Rules
+    Rules -->|"consulta"| Common
+    Validator -->|"ValidationResult"| CLI
+    CLI -->|"resultado sem exibir senha"| User

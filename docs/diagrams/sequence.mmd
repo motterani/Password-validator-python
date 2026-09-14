@@ -1,0 +1,31 @@
+sequenceDiagram
+    actor U as Usuário
+    participant CLI as CLI
+    participant V as Validator
+    participant R as Rules
+
+    U->>CLI: Executa password-validator
+    CLI->>U: Solicita senha com getpass
+    U->>CLI: Digita senha
+    CLI->>V: validate_password(password)
+
+    V->>R: verifica tamanho mínimo
+    R-->>V: resultado
+    V->>R: verifica letra maiúscula
+    R-->>V: resultado
+    V->>R: verifica letra minúscula
+    R-->>V: resultado
+    V->>R: verifica número
+    R-->>V: resultado
+    V->>R: verifica caractere especial
+    R-->>V: resultado
+    V->>R: verifica senha comum
+    R-->>V: resultado
+
+    V-->>CLI: ValidationResult
+
+    alt senha válida
+        CLI-->>U: Senha válida
+    else senha inválida
+        CLI-->>U: Regras não atendidas
+    end
