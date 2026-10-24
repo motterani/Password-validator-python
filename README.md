@@ -253,6 +253,28 @@ Essa documentação adicional transformaria a arquitetura atual em uma especific
 
 ---
 
+## Testes de integração com GenAI — Unidade III (revisão 1.4.0)
+
+A aplicação **não expõe API REST**; por isso, os testes de integração usam os módulos existentes `CLI → Validator → Rules` e o contrato `Validator → Rules`.
+
+Dois tipos de prompt orientaram a geração e revisão dos testes: **baseado em cenários** e **baseado em contratos/erros**. As formulações, os ajustes, a comparação de qualidade e as limitações estão em [**Testes de integração com GenAI**](docs/testes-integracao-genai.md).
+
+Os novos arquivos `tests/integration/` contêm **27 casos**, adicionados aos **13 testes existentes** (40 casos no total). O validador e as regras são reais; somente a entrada interativa `getpass` é substituída nos testes da CLI.
+
+```bash
+pytest -q tests/integration  # apenas a nova suíte
+pytest -q                    # todos os testes
+```
+
+**Documentos da atividade:**
+
+- [Prompt A — cenários de integração](docs/prompts/01-cenarios-de-integracao.md)
+- [Prompt B — contratos, erros e segurança](docs/prompts/02-contratos-erros-seguranca.md)
+- [Resultados e comparação dos prompts](docs/testes-integracao-genai.md)
+- [Texto sugerido para postagem no fórum](docs/postagem-forum.md)
+
+---
+
 ## Estrutura do repositório
 
 ```text
